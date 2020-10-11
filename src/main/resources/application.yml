@@ -1,0 +1,65 @@
+server:
+  port: 8080
+  undertow:
+    threads:
+      io: 8
+      worker: 128
+    accesslog:
+      dir: /apprun/logs/${spring.application.name}/access
+      enabled: true
+      rotate: true
+    direct-buffers: true
+    buffer-size: 1024
+spring:
+  application:
+    name: learn-mybatis
+  redis:
+    host: 192.168.4.31
+    port: 6379
+    password: Mm_123456
+    timeout: 5s
+    lettuce:
+      pool:
+        min-idle: 1
+        max-idle: 4
+        max-active: 8
+        max-wait: 2000
+logging:
+  level:
+    root: info
+  file:
+    total-size-cap: 10GB
+    clean-history-on-start: true
+    max-history: 7
+    max-size: 300MB
+    path: /apprun/logs/${spring.application.name}/business
+management:
+  server:
+    port: 8888
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+        step: 5s
+        descriptions: true
+  endpoint:
+    prometheus:
+      enabled: true
+    beans:
+      enabled: true
+    health:
+      enabled: true
+    httptrace:
+      enabled: true
+    info:
+      enabled: true
+    loggers:
+      enabled: true
+    metrics:
+      enabled: true
+    threaddump:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: beans,prometheus,health,httptrace,info,loggers,metrics,threaddump
