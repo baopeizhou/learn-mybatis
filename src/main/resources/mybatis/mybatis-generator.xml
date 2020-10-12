@@ -3,52 +3,29 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-    <context id="mysql" defaultModelType="flat" targetRuntime="MyBatis3" >
-
-
-        <!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表；
-            一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖
-         -->
+    <context id="mysql" defaultModelType="flat" targetRuntime="MyBatis3DynamicSqlV2" >
         <property name="autoDelimitKeywords" value="false"/>
-        <!-- 生成的Java文件的编码 -->
         <property name="javaFileEncoding" value="UTF-8"/>
-        <!-- 格式化java代码 -->
         <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
-        <!-- 格式化XML代码 -->
         <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
-
-        <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
 
-
+        <!-- java类的注释配置 -->
         <commentGenerator>
-            <!--<property name="suppressDate" value="true"/>-->
-            <!--<property name="suppressAllComments" value="true" />-->
+            <property name="suppressDate" value="false"/>
+            <property name="suppressAllComments" value="false" />
             <property name="addRemarkComments" value="true" />
         </commentGenerator>
 
-        <!-- 必须要有的，使用这个配置链接数据库
-            @TODO:是否可以扩展
-         -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8" userId="root" password="123456">
-            <!-- 这里面可以设置property属性，每一个property属性都设置到配置的Driver上 -->
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="" userId="" password="">
         </jdbcConnection>
 
-        <!-- java类型处理器
-            用于处理DB中的类型到Java中的类型，默认使用JavaTypeResolverDefaultImpl；
-            注意一点，默认会先尝试使用Integer，Long，Short等来对应DECIMAL和 NUMERIC数据类型；
-        -->
+
         <javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
-            <!--
-                true：使用BigDecimal对应DECIMAL和 NUMERIC数据类型
-                false：默认,
-                    scale>0;length>18：使用BigDecimal;
-                    scale=0;length[10,18]：使用Long；
-                    scale=0;length[5,9]：使用Integer；
-                    scale=0;length<5：使用Short；
-             -->
-            <property name="forceBigDecimals" value="false"/>
+            <property name="forceBigDecimals" value="true"/>
+            <property name="useJSR310Types" value="true"/>
         </javaTypeResolver>
 
 
@@ -65,24 +42,11 @@
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
         <sqlMapGenerator targetPackage="mybatis/mapper/" targetProject="src/main/resources">
-            <!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false -->
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
-
-
-        <!-- 对于mybatis来说，即生成Mapper接口，注意，如果没有配置该元素，那么默认不会生成Mapper接口
-            targetPackage/targetProject:同javaModelGenerator
-            type：选择怎么生成mapper接口（在MyBatis3/MyBatis3Simple下）：
-                1，ANNOTATEDMAPPER：会生成使用Mapper接口+Annotation的方式创建（SQL生成在annotation中），不会生成对应的XML；
-                2，MIXEDMAPPER：使用混合配置，会生成Mapper接口，并适当添加合适的Annotation，但是XML会生成在XML中；
-                3，XMLMAPPER：会生成Mapper接口，接口完全依赖XML；
-            注意，如果context是MyBatis3Simple：只支持ANNOTATEDMAPPER和XMLMAPPER
-        -->
         <javaClientGenerator targetPackage="org.bob.learn.dao.mapper" type="XMLMAPPER" targetProject="src/main/java">
             <property name="enableSubPackages" value="false"/>
-            <!-- 可以为所有生成的接口添加一个父接口，但是MBG只负责生成，不负责检查
-            <property name="rootInterface" value=""/>
-             -->
+            <property name="rootInterface" value="org.bob.learn.dao.mapper.BaseMapper"/>
         </javaClientGenerator>
 
         <!-- 选择一个table来生成相关文件，可以有一个或多个table，必须要有table元素
@@ -125,7 +89,7 @@
 
             注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
          -->
-        <table tableName="user" >
+        <table tableName="family" >
 
             <!-- 参考 javaModelGenerator 的 constructorBased属性-->
             <property name="constructorBased" value="false"/>
@@ -202,28 +166,7 @@
                column:要重新设置的列名；
                注意，一个table元素中可以有多个columnOverride元素哈~
              -->
-            <columnOverride column="name">
-                <!-- 使用property属性来指定列要生成的属性名称 -->
-                <property name="property" value="name"/>
 
-                <!-- javaType用于指定生成的domain的属性类型，使用类型的全限定名
-                <property name="javaType" value=""/>
-                 -->
-
-                <!-- jdbcType用于指定该列的JDBC类型
-                <property name="jdbcType" value=""/>
-                 -->
-
-                <!-- typeHandler 用于指定该列使用到的TypeHandler，如果要指定，配置类型处理器的全限定名
-                    注意，mybatis中，不会生成到mybatis-config.xml中的typeHandler
-                    只会生成类似：where id = #{id,jdbcType=BIGINT,typeHandler=com._520it.mybatis.MyTypeHandler}的参数描述
-                <property name="jdbcType" value=""/>
-                -->
-
-                <!-- 参考table元素的delimitAllColumns配置，默认为false
-                <property name="delimitedColumnName" value=""/>
-                 -->
-            </columnOverride>
 
             <!-- ignoreColumn设置一个MGB忽略的列，如果设置了改列，那么在生成的domain中，生成的SQL中，都不会有该列出现
                column:指定要忽略的列的名字；
