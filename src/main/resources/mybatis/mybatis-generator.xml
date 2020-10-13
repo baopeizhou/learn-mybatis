@@ -19,7 +19,7 @@
         </commentGenerator>
 
 
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/family" userId="learn" password="Mm_1989321">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/learn" userId="learn" password="Mm_1989321">
         </jdbcConnection>
 
 
@@ -89,7 +89,7 @@
 
             注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
          -->
-        <table tableName="family" >
+        <table tableName="an_blacklist" >
 
             <!-- 参考 javaModelGenerator 的 constructorBased属性-->
             <property name="constructorBased" value="false"/>
