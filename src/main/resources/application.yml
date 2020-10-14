@@ -24,6 +24,24 @@ spring:
         max-idle: 4
         max-active: 8
         max-wait: 2000
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/learn
+    username: learn
+    password: Mm_1989321
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 60000
+      idle-timeout: 60000
+      max-lifetime: 1800000
+      minimum-idle: 5
+      maximum-pool-size: 10
+      pool-name: ${spring.application.name}
+      dataSourceProperties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+
 logging:
   level:
     root: info

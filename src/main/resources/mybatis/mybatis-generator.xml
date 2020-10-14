@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-    <context id="mysql" defaultModelType="flat" targetRuntime="MyBatis3simple" >
+    <context id="mysql" defaultModelType="flat" targetRuntime="MyBatis3DynamicSql" >
         <property name="autoDelimitKeywords" value="false"/>
         <property name="javaFileEncoding" value="UTF-8"/>
         <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
@@ -89,7 +89,7 @@
 
             注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
          -->
-        <table tableName="an_blacklist" >
+        <table tableName="an_statistics" domainObjectName="Statistics" mapperName="StatisticsMapper" >
 
             <!-- 参考 javaModelGenerator 的 constructorBased属性-->
             <property name="constructorBased" value="false"/>
