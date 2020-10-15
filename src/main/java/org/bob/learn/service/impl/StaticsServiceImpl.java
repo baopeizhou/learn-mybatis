@@ -8,6 +8,7 @@ import static org.bob.learn.dao.mapper.StatisticsDynamicSqlSupport.*;
 import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
 import javax.annotation.Resource;
+import java.util.Optional;
 
 @Service
 public class StaticsServiceImpl implements StaticsService {
@@ -23,7 +24,12 @@ public class StaticsServiceImpl implements StaticsService {
     }
 
     @Override
-    public Statistics getStatistics(String mac, String sn) {
-        return null;
+    public Statistics getStatistics(String macValue, String snValue) {
+        Statistics statistics = null;
+        Optional<Statistics> statisticsOptional = statisticsMapper.selectOne(c->c.where(mac,isEqualTo(macValue)).and(sn,isEqualToWhenPresent(snValue)));
+        if(statisticsOptional.isPresent()){
+            statistics =   statisticsOptional.get();
+        }
+        return statistics;
     }
 }
