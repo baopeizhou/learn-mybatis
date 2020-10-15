@@ -4,15 +4,16 @@ import lombok.Data;
 
 @Data
 public class RiskRecordReq {
+
     private String mac;
 
     private String sn;
 
     private String dmac;
 
-    private Integer pageNum;
+    private int pageNum = 1;
 
-    private Integer pageSize;
+    private int pageSize = 20;
 
 
 }

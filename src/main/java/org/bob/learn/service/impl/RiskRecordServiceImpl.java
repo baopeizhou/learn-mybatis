@@ -5,7 +5,6 @@ import org.bob.learn.dao.mapper.RiskRecordMapper;
 import org.bob.learn.dao.model.RiskRecord;
 import org.bob.learn.service.RiskRecordService;
 import org.bob.learn.web.model.RiskRecordReq;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import static org.bob.learn.dao.mapper.RiskRecordDynamicSqlSupport.*;
 import static org.mybatis.dynamic.sql.SqlBuilder.*;
