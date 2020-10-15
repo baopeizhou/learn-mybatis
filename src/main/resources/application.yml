@@ -41,10 +41,17 @@ spring:
         cachePrepStmts: true
         prepStmtCacheSize: 250
         prepStmtCacheSqlLimit: 2048
-
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
 logging:
   level:
     root: info
+    org.apache.ibatis: debug
+    com.mysql: debug
+    org.bob.learn: debug
   file:
     total-size-cap: 10GB
     clean-history-on-start: true
