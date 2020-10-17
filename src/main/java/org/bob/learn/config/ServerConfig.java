@@ -9,5 +9,6 @@ public class ServerConfig implements WebServerFactoryCustomizer<UndertowServletW
 
     @Override
     public void customize(UndertowServletWebServerFactory factory) {
+
     }
 }

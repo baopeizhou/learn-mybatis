@@ -14,7 +14,7 @@ spring:
   application:
     name: learn-mybatis
   redis:
-    host: 192.168.4.31
+    host: 127.0.0.1
     port: 6379
     password: Mm_123456
     timeout: 5s
@@ -25,7 +25,7 @@ spring:
         max-active: 8
         max-wait: 2000
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/learn
+    url: jdbc:mysql://127.0.0.1:3306/learn?useSSL=false
     username: learn
     password: Mm_1989321
     driver-class-name: com.mysql.jdbc.Driver
