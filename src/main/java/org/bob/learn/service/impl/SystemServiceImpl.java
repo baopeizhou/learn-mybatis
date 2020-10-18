@@ -1,11 +1,16 @@
 package org.bob.learn.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.bob.learn.service.SystemService;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.management.*;
 import java.lang.management.ManagementFactory;
 
+@Slf4j
+@EnableScheduling
 @Service
 public class SystemServiceImpl implements SystemService {
 
@@ -13,10 +18,13 @@ public class SystemServiceImpl implements SystemService {
 
     private static MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
-    
+
+    @Scheduled(cron = "5/10 * * * * ?")
     @Override
     public boolean isOverloaded() {
-        return UndertowHttpThreadMetrics.instance().isOverloaded(DEFAULT_HTTP_WORK_THRESHOLD);
+        boolean flag = UndertowHttpThreadMetrics.instance().isOverloaded(DEFAULT_HTTP_WORK_THRESHOLD);
+        log.info(flag+"");
+        return flag;
     }
 
     interface ServerHttpThreadMetrics{
@@ -56,9 +64,11 @@ public class SystemServiceImpl implements SystemService {
 
         private static int maxThreadNum;
 
+        private static int busyThreadNum;
+
         static {
             try {
-                OBJECT_NAME_UNDERTOW_THREAD_POOL = new ObjectName("org.xnio:type=Xnio,provider=\"nio\"," + "worker=\"XNIO-2\"");
+                OBJECT_NAME_UNDERTOW_THREAD_POOL = new ObjectName("org.xnio:type=Xnio,provider=\"nio\",worker=\"XNIO-2\"");
                 maxThreadNum = Integer.valueOf(mBeanServer.getAttribute(OBJECT_NAME_UNDERTOW_THREAD_POOL,ATTRIBUTE_MAX_THREADS).toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -76,16 +86,18 @@ public class SystemServiceImpl implements SystemService {
         @Override
         public int busyThreadNum() {
             try {
-                return Integer.valueOf(mBeanServer.getAttribute(OBJECT_NAME_UNDERTOW_THREAD_POOL,ATTRIBUTE_BUSY_THREADS).toString());
+                busyThreadNum =  Integer.valueOf(mBeanServer.getAttribute(OBJECT_NAME_UNDERTOW_THREAD_POOL,ATTRIBUTE_BUSY_THREADS).toString());
             } catch (Exception e) {
                 e.printStackTrace();
-                return 0;
+                busyThreadNum = 0;
             }
+            log.info(busyThreadNum+"");
+            return busyThreadNum;
         }
 
         @Override
         public boolean isOverloaded(float threshold) {
-            return busyThreadNum()< (maxThreadNum()* threshold);
+            return busyThreadNum()> (maxThreadNum()* threshold);
         }
     }
 }

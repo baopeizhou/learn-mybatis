@@ -46,12 +46,16 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+jboss:
+  threads:
+    eqe:
+      disable: true
 logging:
   level:
     root: info
-    org.apache.ibatis: debug
-    com.mysql: debug
-    org.bob.learn: debug
+    org.apache.ibatis: info
+    com.mysql: info
+    org.bob.learn: info
   file:
     total-size-cap: 10GB
     clean-history-on-start: true
@@ -84,7 +88,9 @@ management:
       enabled: true
     threaddump:
       enabled: true
+    env:
+      enabled: true
   endpoints:
     web:
       exposure:
-        include: beans,prometheus,health,httptrace,info,loggers,metrics,threaddump
+        include: beans,prometheus,health,httptrace,info,loggers,metrics,threaddump,env
